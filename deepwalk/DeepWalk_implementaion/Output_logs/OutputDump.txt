@@ -1,0 +1,584 @@
+Name: blogcatalog.mat
+Type: Graph
+Number of nodes: 10312
+Number of edges: 333983
+Average degree:  64.7756
+---------------------------------------
+
+	**Stage 1 : Generating random walks**
+Building walk corpus with parameters : max_paths per node =  40  and path_length =  40
+Completed
+
+Number of walks in the corpus =  412480
+Time Elapsed for building walk corpus -->  0:02:45.746216
+---------------------------------------
+
+	**Stage 2 : Generating Embeddings for nodes using Word2Vec**
+
+Word2Vec parameters : Dimensions = 64, window = 10, hs = 1, number of cpu cores assigned for training = 40
+Model training done. Word2Vec embeddings generated.
+Time Elapsed for generating embeddings -->  0:05:35.531568
+---------------------------------------
+
+	**Stage 3 : Evaluating classifier performance with the embeddings**
+
+ Evaluation completed using the following:
+-->  Logistic_Regression
+Time Elapsed for evaluation -->  0:00:11.537528
+---------------------------------------
+
+Printing evaluation results : 
+
+
+Classifier :  Logistic_Regression
+	Training size :  0.1
+		Micro F1:  0.3718096114049207
+		Macro F1:  0.21656610372365206
+	Training size :  0.2
+		Micro F1:  0.3947641264904096
+		Macro F1:  0.2349697258542786
+	Training size :  0.3
+		Micro F1:  0.40162311955661123
+		Macro F1:  0.24233831278328014
+	Training size :  0.4
+		Micro F1:  0.40756544804520817
+		Macro F1:  0.2577673152398503
+	Training size :  0.5
+		Micro F1:  0.4085932085932086
+		Macro F1:  0.2580966577382874
+	Training size :  0.6
+		Micro F1:  0.41019417475728154
+		Macro F1:  0.2642518163043867
+	Training size :  0.7
+		Micro F1:  0.4167636786961583
+		Macro F1:  0.27431395497214545
+	Training size :  0.8
+		Micro F1:  0.41943376441803565
+		Macro F1:  0.273054828245794
+	Training size :  0.9
+		Micro F1:  0.4145995747696669
+		Macro F1:  0.25710951026587625
+	---------------------------------------
+	 Average Micro F1 :  0.40503852297016674
+	 Average Macro F1 :  0.2531631361252834
+====================================================
+
+Name: blogcatalog.mat
+Type: Graph
+Number of nodes: 10312
+Number of edges: 333983
+Average degree:  64.7756
+---------------------------------------
+
+	**Stage 1 : Generating random walks**
+Building walk corpus with parameters : max_paths per node =  60  and path_length =  40
+Completed
+
+Number of walks in the corpus =  618720
+Time Elapsed for building walk corpus -->  0:04:14.154981
+---------------------------------------
+
+	**Stage 2 : Generating Embeddings for nodes using Word2Vec**
+
+Word2Vec parameters : Dimensions = 64, window = 10, hs = 1, number of cpu cores assigned for training = 40
+Model training done. Word2Vec embeddings generated.
+Time Elapsed for generating embeddings -->  0:07:50.170052
+---------------------------------------
+
+	**Stage 3 : Evaluating classifier performance with the embeddings**
+
+ Evaluation completed using the following:
+-->  Logistic_Regression
+Time Elapsed for evaluation -->  0:00:11.652724
+---------------------------------------
+
+Printing evaluation results : 
+
+
+Classifier :  Logistic_Regression
+	Training size :  0.1
+		Micro F1:  0.37203954932168315
+		Macro F1:  0.21786126258351116
+	Training size :  0.2
+		Micro F1:  0.3947641264904096
+		Macro F1:  0.23620887379301736
+	Training size :  0.3
+		Micro F1:  0.4089469517022961
+		Macro F1:  0.24848340145844247
+	Training size :  0.4
+		Micro F1:  0.40998731403529004
+		Macro F1:  0.25133470361125315
+	Training size :  0.5
+		Micro F1:  0.4148302148302148
+		Macro F1:  0.2593680777091294
+	Training size :  0.6
+		Micro F1:  0.4179958391123439
+		Macro F1:  0.26546635928823387
+	Training size :  0.7
+		Micro F1:  0.4167636786961583
+		Macro F1:  0.2656009175908038
+	Training size :  0.8
+		Micro F1:  0.41943376441803565
+		Macro F1:  0.2694984204945736
+	Training size :  0.9
+		Micro F1:  0.4202693125442948
+		Macro F1:  0.2581568840394783
+	---------------------------------------
+	 Average Micro F1 :  0.4083367501278585
+	 Average Macro F1 :  0.25244210006316037
+====================================================
+
+Name: blogcatalog.mat
+Type: Graph
+Number of nodes: 10312
+Number of edges: 333983
+Average degree:  64.7756
+---------------------------------------
+
+	**Stage 1 : Generating random walks**
+Building walk corpus with parameters : max_paths per node =  80  and path_length =  40
+Completed
+
+Number of walks in the corpus =  824960
+Time Elapsed for building walk corpus -->  0:05:38.738421
+---------------------------------------
+
+	**Stage 2 : Generating Embeddings for nodes using Word2Vec**
+
+Word2Vec parameters : Dimensions = 64, window = 10, hs = 1, number of cpu cores assigned for training = 40
+Model training done. Word2Vec embeddings generated.
+Time Elapsed for generating embeddings -->  0:09:02.619637
+---------------------------------------
+
+	**Stage 3 : Evaluating classifier performance with the embeddings**
+
+ Evaluation completed using the following:
+-->  Logistic_Regression
+Time Elapsed for evaluation -->  0:00:11.073397
+---------------------------------------
+
+Printing evaluation results : 
+
+
+Classifier :  Logistic_Regression
+	Training size :  0.1
+		Micro F1:  0.37088985973787075
+		Macro F1:  0.2170372417340849
+	Training size :  0.2
+		Micro F1:  0.39614653533782623
+		Macro F1:  0.23955609066303743
+	Training size :  0.3
+		Micro F1:  0.40370150435471097
+		Macro F1:  0.2492903081104472
+	Training size :  0.4
+		Micro F1:  0.40906469842002074
+		Macro F1:  0.2562507250957084
+	Training size :  0.5
+		Micro F1:  0.41191961191961185
+		Macro F1:  0.2594606131032972
+	Training size :  0.6
+		Micro F1:  0.4174757281553398
+		Macro F1:  0.2729250669590884
+	Training size :  0.7
+		Micro F1:  0.41792782305005827
+		Macro F1:  0.2789416385542122
+	Training size :  0.8
+		Micro F1:  0.4260747990213212
+		Macro F1:  0.27862136019760453
+	Training size :  0.9
+		Micro F1:  0.4202693125442948
+		Macro F1:  0.2660842137707329
+	---------------------------------------
+	 Average Micro F1 :  0.40816331917122833
+	 Average Macro F1 :  0.25757413979869037
+====================================================
+
+Name: blogcatalog.mat
+Type: Graph
+Number of nodes: 10312
+Number of edges: 333983
+Average degree:  64.7756
+---------------------------------------
+
+	**Stage 1 : Generating random walks**
+Building walk corpus with parameters : max_paths per node =  40  and path_length =  40
+Completed
+
+Number of walks in the corpus =  412480
+Time Elapsed for building walk corpus -->  0:02:47.298178
+---------------------------------------
+
+	**Stage 2 : Generating Embeddings for nodes using Word2Vec**
+
+Word2Vec parameters : Dimensions = 128, window = 10, hs = 1, number of cpu cores assigned for training = 40
+Model training done. Word2Vec embeddings generated.
+Time Elapsed for generating embeddings -->  0:06:24.526543
+---------------------------------------
+
+	**Stage 3 : Evaluating classifier performance with the embeddings**
+
+ Evaluation completed using the following:
+-->  Logistic_Regression
+Time Elapsed for evaluation -->  0:00:19.221979
+---------------------------------------
+
+Printing evaluation results : 
+
+
+Classifier :  Logistic_Regression
+	Training size :  0.1
+		Micro F1:  0.3541043918142101
+		Macro F1:  0.20859655858861145
+	Training size :  0.2
+		Micro F1:  0.3747191982028685
+		Macro F1:  0.23088552800074594
+	Training size :  0.3
+		Micro F1:  0.38865795724465557
+		Macro F1:  0.24766663881007298
+	Training size :  0.4
+		Micro F1:  0.3939568677199861
+		Macro F1:  0.25203005166226905
+	Training size :  0.5
+		Micro F1:  0.4019404019404019
+		Macro F1:  0.2608711747926506
+	Training size :  0.6
+		Micro F1:  0.40481969486823854
+		Macro F1:  0.27210237655231556
+	Training size :  0.7
+		Micro F1:  0.4114086146682189
+		Macro F1:  0.28418174063868573
+	Training size :  0.8
+		Micro F1:  0.41558895491087033
+		Macro F1:  0.28401391186650304
+	Training size :  0.9
+		Micro F1:  0.41105598866052445
+		Macro F1:  0.26359256305301715
+	---------------------------------------
+	 Average Micro F1 :  0.39513911889221937
+	 Average Macro F1 :  0.25599339377387464
+====================================================
+
+Name: blogcatalog.mat
+Type: Graph
+Number of nodes: 10312
+Number of edges: 333983
+Average degree:  64.7756
+---------------------------------------
+
+	**Stage 1 : Generating random walks**
+Building walk corpus with parameters : max_paths per node =  60  and path_length =  40
+Completed
+
+Number of walks in the corpus =  618720
+Time Elapsed for building walk corpus -->  0:04:17.583143
+---------------------------------------
+
+	**Stage 2 : Generating Embeddings for nodes using Word2Vec**
+
+Word2Vec parameters : Dimensions = 128, window = 10, hs = 1, number of cpu cores assigned for training = 40
+Model training done. Word2Vec embeddings generated.
+Time Elapsed for generating embeddings -->  0:13:37.305520
+---------------------------------------
+
+	**Stage 3 : Evaluating classifier performance with the embeddings**
+
+ Evaluation completed using the following:
+-->  Logistic_Regression
+Time Elapsed for evaluation -->  0:00:20.295664
+---------------------------------------
+
+Printing evaluation results : 
+
+
+Classifier :  Logistic_Regression
+	Training size :  0.1
+		Micro F1:  0.3531079941749061
+		Macro F1:  0.20292366339266288
+	Training size :  0.2
+		Micro F1:  0.3775704164506653
+		Macro F1:  0.2287473692939163
+	Training size :  0.3
+		Micro F1:  0.3908353127474268
+		Macro F1:  0.24312078784419258
+	Training size :  0.4
+		Micro F1:  0.40525890900703493
+		Macro F1:  0.26868403688288806
+	Training size :  0.5
+		Micro F1:  0.40776160776160775
+		Macro F1:  0.2708216088384631
+	Training size :  0.6
+		Micro F1:  0.4143550624133148
+		Macro F1:  0.28419141773595363
+	Training size :  0.7
+		Micro F1:  0.4188591385331782
+		Macro F1:  0.28614404079594874
+	Training size :  0.8
+		Micro F1:  0.42712338343236633
+		Macro F1:  0.29670346728819347
+	Training size :  0.9
+		Micro F1:  0.4160170092133239
+		Macro F1:  0.2754852378933871
+	---------------------------------------
+	 Average Micro F1 :  0.40120987041486933
+	 Average Macro F1 :  0.2618690699961784
+====================================================
+
+Name: blogcatalog.mat
+Type: Graph
+Number of nodes: 10312
+Number of edges: 333983
+Average degree:  64.7756
+---------------------------------------
+
+	**Stage 1 : Generating random walks**
+Building walk corpus with parameters : max_paths per node =  80  and path_length =  40
+Completed
+
+Number of walks in the corpus =  824960
+Time Elapsed for building walk corpus -->  0:05:34.747998
+---------------------------------------
+
+	**Stage 2 : Generating Embeddings for nodes using Word2Vec**
+
+Word2Vec parameters : Dimensions = 128, window = 10, hs = 1, number of cpu cores assigned for training = 40
+Model training done. Word2Vec embeddings generated.
+Time Elapsed for generating embeddings -->  0:17:30.373393
+---------------------------------------
+
+	**Stage 3 : Evaluating classifier performance with the embeddings**
+
+ Evaluation completed using the following:
+-->  Logistic_Regression
+Time Elapsed for evaluation -->  0:00:20.851793
+---------------------------------------
+
+Printing evaluation results : 
+
+
+Classifier :  Logistic_Regression
+	Training size :  0.1
+		Micro F1:  0.3583199202881889
+		Macro F1:  0.2069606524025635
+	Training size :  0.2
+		Micro F1:  0.38716087782961817
+		Macro F1:  0.2364452749918718
+	Training size :  0.3
+		Micro F1:  0.4012272367379256
+		Macro F1:  0.2570854026306454
+	Training size :  0.4
+		Micro F1:  0.4026063891131358
+		Macro F1:  0.2702002711347309
+	Training size :  0.5
+		Micro F1:  0.4098406098406098
+		Macro F1:  0.27892802368578035
+	Training size :  0.6
+		Micro F1:  0.41938280166435504
+		Macro F1:  0.2877560939906476
+	Training size :  0.7
+		Micro F1:  0.42537834691501747
+		Macro F1:  0.29342995974662445
+	Training size :  0.8
+		Micro F1:  0.42432715833624607
+		Macro F1:  0.2917577364544419
+	Training size :  0.9
+		Micro F1:  0.42523033309709424
+		Macro F1:  0.27630901030480237
+	---------------------------------------
+	 Average Micro F1 :  0.4059415193135768
+	 Average Macro F1 :  0.2665413805935676
+====================================================
+
+Name: blogcatalog.mat
+Type: Graph
+Number of nodes: 10312
+Number of edges: 333983
+Average degree:  64.7756
+---------------------------------------
+
+	**Stage 1 : Generating random walks**
+Building walk corpus with parameters : max_paths per node =  40  and path_length =  40
+Completed
+
+Number of walks in the corpus =  412480
+Time Elapsed for building walk corpus -->  0:02:49.400056
+---------------------------------------
+
+	**Stage 2 : Generating Embeddings for nodes using Word2Vec**
+
+Word2Vec parameters : Dimensions = 256, window = 10, hs = 1, number of cpu cores assigned for training = 40
+Model training done. Word2Vec embeddings generated.
+Time Elapsed for generating embeddings -->  0:12:12.614309
+---------------------------------------
+
+	**Stage 3 : Evaluating classifier performance with the embeddings**
+
+ Evaluation completed using the following:
+-->  Logistic_Regression
+Time Elapsed for evaluation -->  0:00:47.403246
+---------------------------------------
+
+Printing evaluation results : 
+
+
+Classifier :  Logistic_Regression
+	Training size :  0.1
+		Micro F1:  0.3321069977772668
+		Macro F1:  0.19104072500968833
+	Training size :  0.2
+		Micro F1:  0.35441506825643676
+		Macro F1:  0.2163174439876124
+	Training size :  0.3
+		Micro F1:  0.36975455265241486
+		Macro F1:  0.24168447663707418
+	Training size :  0.4
+		Micro F1:  0.3820781916733941
+		Macro F1:  0.25249543406510405
+	Training size :  0.5
+		Micro F1:  0.38738738738738737
+		Macro F1:  0.2657578685804869
+	Training size :  0.6
+		Micro F1:  0.3973647711511789
+		Macro F1:  0.272905027513203
+	Training size :  0.7
+		Micro F1:  0.4062863795110594
+		Macro F1:  0.27712728294795574
+	Training size :  0.8
+		Micro F1:  0.4082488640335547
+		Macro F1:  0.2769388568999933
+	Training size :  0.9
+		Micro F1:  0.4167257264351524
+		Macro F1:  0.2761237263198688
+	---------------------------------------
+	 Average Micro F1 :  0.38381865987531616
+	 Average Macro F1 :  0.25226564910677635
+====================================================
+
+Name: blogcatalog.mat
+Type: Graph
+Number of nodes: 10312
+Number of edges: 333983
+Average degree:  64.7756
+---------------------------------------
+
+	**Stage 1 : Generating random walks**
+Building walk corpus with parameters : max_paths per node =  60  and path_length =  40
+Completed
+
+Number of walks in the corpus =  618720
+Time Elapsed for building walk corpus -->  0:04:13.364798
+---------------------------------------
+
+	**Stage 2 : Generating Embeddings for nodes using Word2Vec**
+
+Word2Vec parameters : Dimensions = 256, window = 10, hs = 1, number of cpu cores assigned for training = 40
+Model training done. Word2Vec embeddings generated.
+Time Elapsed for generating embeddings -->  0:13:49.377615
+---------------------------------------
+
+	**Stage 3 : Evaluating classifier performance with the embeddings**
+
+ Evaluation completed using the following:
+-->  Logistic_Regression
+Time Elapsed for evaluation -->  0:00:47.857927
+---------------------------------------
+
+Printing evaluation results : 
+
+
+Classifier :  Logistic_Regression
+	Training size :  0.1
+		Micro F1:  0.3447535831992029
+		Macro F1:  0.20275136680289124
+	Training size :  0.2
+		Micro F1:  0.3580438914809055
+		Macro F1:  0.2213879727051036
+	Training size :  0.3
+		Micro F1:  0.37876088677751385
+		Macro F1:  0.2438692380216663
+	Training size :  0.4
+		Micro F1:  0.3856533271825625
+		Macro F1:  0.2611330842620613
+	Training size :  0.5
+		Micro F1:  0.39584199584199586
+		Macro F1:  0.27366304027817745
+	Training size :  0.6
+		Micro F1:  0.4065533980582524
+		Macro F1:  0.29109873464225383
+	Training size :  0.7
+		Micro F1:  0.4118742724097788
+		Macro F1:  0.29171029278963145
+	Training size :  0.8
+		Micro F1:  0.4197832925550507
+		Macro F1:  0.29053286744653545
+	Training size :  0.9
+		Micro F1:  0.4153082919914954
+		Macro F1:  0.27661515113708024
+	---------------------------------------
+	 Average Micro F1 :  0.39073032661075086
+	 Average Macro F1 :  0.26141797200948896
+====================================================
+
+Name: blogcatalog.mat
+Type: Graph
+Number of nodes: 10312
+Number of edges: 333983
+Average degree:  64.7756
+---------------------------------------
+
+	**Stage 1 : Generating random walks**
+Building walk corpus with parameters : max_paths per node =  80  and path_length =  40
+Completed
+
+Number of walks in the corpus =  824960
+Time Elapsed for building walk corpus -->  0:05:49.667525
+---------------------------------------
+
+	**Stage 2 : Generating Embeddings for nodes using Word2Vec**
+
+Word2Vec parameters : Dimensions = 256, window = 10, hs = 1, number of cpu cores assigned for training = 40
+Model training done. Word2Vec embeddings generated.
+Time Elapsed for generating embeddings -->  0:25:44.341107
+---------------------------------------
+
+	**Stage 3 : Evaluating classifier performance with the embeddings**
+
+ Evaluation completed using the following:
+-->  Logistic_Regression
+Time Elapsed for evaluation -->  0:00:47.065421
+---------------------------------------
+
+Printing evaluation results : 
+
+
+Classifier :  Logistic_Regression
+	Training size :  0.1
+		Micro F1:  0.3426074959760865
+		Macro F1:  0.20024403368070298
+	Training size :  0.2
+		Micro F1:  0.36893036115431144
+		Macro F1:  0.23205878049774453
+	Training size :  0.3
+		Micro F1:  0.3806413301662708
+		Macro F1:  0.24987246777416003
+	Training size :  0.4
+		Micro F1:  0.3894591165955484
+		Macro F1:  0.26391680934548434
+	Training size :  0.5
+		Micro F1:  0.3991683991683992
+		Macro F1:  0.2694985777871373
+	Training size :  0.6
+		Micro F1:  0.4053398058252427
+		Macro F1:  0.2810987271202579
+	Training size :  0.7
+		Micro F1:  0.40651920838183936
+		Macro F1:  0.2822309591654081
+	Training size :  0.8
+		Micro F1:  0.4131422579517651
+		Macro F1:  0.29061571026664074
+	Training size :  0.9
+		Micro F1:  0.41247342310418145
+		Macro F1:  0.2653282886451161
+	---------------------------------------
+	 Average Micro F1 :  0.3909201553692938
+	 Average Macro F1 :  0.2594293726980725
+====================================================

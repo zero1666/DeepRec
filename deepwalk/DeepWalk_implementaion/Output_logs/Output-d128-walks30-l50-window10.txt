@@ -1,0 +1,67 @@
+Name: blogcatalog.mat
+Type: Graph
+Number of nodes: 10312
+Number of edges: 333983
+Average degree:  64.7756
+---------------------------------------
+
+	**Stage 1 : Generating random walks**
+Building walk corpus with parameters : max_paths per node =  30  and path_length =  50
+Completed
+
+Number of walks in the corpus =  309360
+Time Elapsed for building walk corpus -->  0:03:17.905682
+Corpus saved on disk as RandomWalks-w30-l50.txt
+---------------------------------------
+
+	**Stage 2 : Generating Embeddings for nodes using Word2Vec**
+
+Word2Vec parameters : Dimensions = 128, window = 10, hs = 1, number of cpu cores assigned for training = 4
+Model training done. Word2Vec embeddings generated.
+Time Elapsed for generating embeddings -->  0:29:02.192397
+Embeddings saved to file ->  word2vec-d128-w10-hs1.txt
+---------------------------------------
+
+	**Stage 3 : Evaluating classifier performance with the embeddings**
+
+ Evaluation completed using the following:
+-->  Logistic_Regression
+Time Elapsed for evaluation -->  0:00:58.538829
+---------------------------------------
+
+Printing evaluation results : 
+
+
+Classifier :  Logistic_Regression
+	Training size :  0.1
+		Micro F1:  0.3449068751437112
+		Macro F1:  0.2005788458622912
+	Training size :  0.2
+		Micro F1:  0.3754104026265768
+		Macro F1:  0.23153900886405046
+	Training size :  0.3
+		Micro F1:  0.3862826603325415
+		Macro F1:  0.2442857832376206
+	Training size :  0.4
+		Micro F1:  0.39118902087417834
+		Macro F1:  0.24984335633463642
+	Training size :  0.5
+		Micro F1:  0.3997227997227997
+		Macro F1:  0.2670504913494793
+	Training size :  0.6
+		Micro F1:  0.4025658807212205
+		Macro F1:  0.2675448275681176
+	Training size :  0.7
+		Micro F1:  0.40582072176949946
+		Macro F1:  0.27607687507439493
+	Training size :  0.8
+		Micro F1:  0.40999650471862986
+		Macro F1:  0.2805707928780261
+	Training size :  0.9
+		Micro F1:  0.4223954642097803
+		Macro F1:  0.27188621839931454
+	---------------------------------------
+	 Average Micro F1 :  0.3931433700132153
+	 Average Macro F1 :  0.2543751332853257
+====================================================
+

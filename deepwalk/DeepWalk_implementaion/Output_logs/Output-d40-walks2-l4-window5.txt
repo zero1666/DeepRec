@@ -1,0 +1,13 @@
+Name: data/blogcatalog.mat
+Type: Graph
+Number of nodes: 10312
+Number of edges: 333983
+Average degree:  64.7756
+---------------------------------------
+
+	**Stage 1 : Generating random walks**
+Building walk corpus with parameters : max_paths per node =  2  and path_length =  4
+Completed
+
+Number of walks in the corpus =  20624
+Time Elapsed for building walk corpus -->  0:00:00.689042
