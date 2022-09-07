@@ -34,17 +34,19 @@ conda activate $CONDA_ENV_NAME
 
 echo -e "\n  + $CONDA_ENV_NAME 下安装相关python工具包 \n" 
 pip install tensorflow==2.6
-pip install numpy matplotlib sklearn pandas keras==2.6
+pip install numpy sklearn pandas keras==2.6
+pip install matplotlib 
 pip install networkx
 pip install easydict
 
 pip install psutil
 pip install setproctitle
+pip install tdqm
 
 {
 /usr/bin/expect <<EOF  
 set timeout  300000
-spawn conda install pandas matplotlib jupyter notebook scipy scikit-learn
+spawn conda install scipy scikit-learn
 expect {
 "*Proceed*" {send "y\r"}
 } 
