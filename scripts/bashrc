@@ -1,0 +1,38 @@
+#!/bin/bash
+# shellcheck disable=SC1090,SC1091
+
+# 注意本脚本不要出现任何回显，否则会导致ceph挂载异常（远程ssh库paramiko）
+
+# 默认个人代码空间
+export PS1="\[\e[0;33m\][\u@$(/sbin/ifconfig eth1|grep inet|awk '{print $2}'|cut -d: -f2) \[\e[0;35m\]\w]\$\[\e[0m\]"
+export ENV_WORKSPACE_USER=/workspace/user_code
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+  . /etc/bashrc
+fi
+
+# 由于用户自定义脚本 *.bashrc 仍然会干扰系统启动，现在只初始化系统认证过的bashrc
+for f in ~/*.bashrc
+do
+  if [[ $f == *"cuda"* ]] ; then
+    source "$f"
+  fi
+done
+
+if [ -e  "$HOME/nvidia.bashrc" ]; then
+    source ~/nvidia.bashrc
+fi
+
+if [ -e  "$HOME/custom.bashrc" ]; then
+    source ~/custom.bashrc
+fi
+
+
+# 由于用户可能在自定义脚本里定义一些污染系统环境的代码，变量，破坏服务正常启动，这里屏蔽掉，有用户自行初始化环境
+# if [ -f  "$ENV_WORKSPACE_USER/.private/custom.bashrc" ]; then
+#    . "$ENV_WORKSPACE_USER/.private/custom.bashrc"
+# fi
+
+
+export PATH="$PATH:$HOME/.ft"
