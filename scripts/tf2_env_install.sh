@@ -59,7 +59,9 @@ echo -e "\n  + $CONDA_ENV_NAME 下注册ipykernel环境\n"
 pip install ipykernel
 python -m ipykernel install --user --name=$CONDA_ENV_NAME --display-name "$CONDA_ENV_NAME"
 
-bash ~/.bashrc
+# 设置bashrc环境
+cp custom.bashrc ~/custom.bashrc 
+source ~/.bashrc
 
 
 
