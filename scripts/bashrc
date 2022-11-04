@@ -29,7 +29,7 @@ if [ -e  "$HOME/custom.bashrc" ]; then
 fi
 
 
- 由于用户可能在自定义脚本里定义一些污染系统环境的代码，变量，破坏服务正常启动，这里屏蔽掉，有用户自行初始化环境
+# 由于用户可能在自定义脚本里定义一些污染系统环境的代码，变量，破坏服务正常启动，这里屏蔽掉，有用户自行初始化环境
  if [ -f  "$ENV_WORKSPACE_USER/.private/custom.bashrc" ]; then
     . "$ENV_WORKSPACE_USER/davidwwang/workspace/rec_proj/scripts/custom.bashrc"
  fi

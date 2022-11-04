@@ -6,6 +6,7 @@ echo -e "\n -----开始安装Tensorflow 2.6.0 CPU 环境------------ \n"
 
 . /data/miniconda3/etc/profile.d/conda.sh
 
+echo -e "\n  + 更新conda 默认配置 \n" 
 {
 /usr/bin/expect <<EOF  
 set timeout  300
@@ -16,6 +17,9 @@ expect {
 expect eof
 EOF
 }
+
+echo -e "\n  + 先删除conda环境 $CONDA_ENV_NAME \n" 
+conda env remove -n py37_tf26_cpu 
 
 echo -e "\n  + 创建conda环境 $CONDA_ENV_NAME \n" 
 {
