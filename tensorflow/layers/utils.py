@@ -88,7 +88,94 @@ class Hash(Layer):
             hash_x = (hash_x + 1) * mask
         
         return hash_x
-        
+
+
+class Linear(Layer):
     
-def reduce_sun(input_tensor, axis=None, keep_dims=False, name=None):
+    def __init_(self, l2_reg=0.0, mode=0, use_bias=False, seed=1024, **kwargs):
+        self.l2_reg = l2_reg
+        if mode not in [0,1,2]:
+            raise ValueError("mode must be 0,1 or 2")
+        self.mode = mode
+        self.use_bias = user_bias
+        self.seed = seed
+        super(Linear,self).__init__(**kwargs)
+    
+    def build(self, input_shape):
+        
+        if self.user_bias = True:
+            self.bias = self.add_weight(name = 'linear_bias',
+                                       shape=(1,),
+                                       initializer=Zeros(),
+                                       trainable = True)
+        if self.mode ==1:
+            self.kernel = self.add_weight( name = 'linear_kernel',
+                                          shape = [int(input_shape[-1]),1],
+                                          initializer = glorot_normal(self.seed),
+                                          regularizer = l2(self.l2_reg),
+                                          trainable = True)
+        elif self.mode == 2:
+            self.kernel = self.add_weight(name = 'linear_kernel',
+                                         shape = [int(input_shape[1][-1]), 1)],
+                                         initializer = glorot_normal(self.seed),
+                                          regularizer = l2(self.l2_reg),
+                                          trainable=True)
+        # Be sure to call this somewhere!
+        super(Linear, self).build(input_shape)
+    
+    def call(self, inputs, **kwargs):
+        if self.mode == 0:
+            sparse_input = inputs
+            linear_logit = reduce_sum(sparse_input,axis = -1, keep_dims=True)
+        elif self.mode == 1 :
+            dense_input = inputs
+            fc = tf.tensordot(dense_input, self.kernel, axis=(-1,0))
+            linear_logit = fc
+        else :
+            sparse_input, dense_input = inputs
+            fc = tf.tensordot(dense_input, self.kernel, axis=(-1,0))
+            linear_logit = reduce_sum(sparse_input, axis = -1, keep_dims=False) + fc
+        
+        if self.use_bias:
+            linear_logit +=  self.bias
+        
+        return linear_logit
+    
+    def compute_output_shape(self, input_shape):
+        return (None, 1)
+    
+    def get_config(self, ):
+        config = {'mode': self.mode, 'l2_reg': self.l2_reg, 'use_bias': self.use_bias, 'seed': self.seed}
+        base_config = super(Linear, self).get_config()
+        return dict(list(base_config.items()) + list(config.items()))
+    
+
+def reduce_sum(input_tensor, axis=None, keep_dims=False, name=None):
     return tf.reduce_sum(input_tensor, axis=axis, keep_dims=keep_dims, name = name)
+
+
+def reduce_max(input_tensor, axis=None, keepdims=False, name=None):
+    return tf.reduce_mean(input_tensor=input_tensor, axis=axis, keep_dims=keep_dims, name=name)
+
+def concat_fn(inputs, axis =-1, mask=False):
+    if not mask:
+        inputs = list(map(Nomask(), inputs))
+    
+    if len(inputs)==1:
+        return inputs[0]
+    else:
+        Concatenate(axis=axis)(inputs)
+    
+def combined_dnn_input(sparse_embedding_list, dense_value_list):
+    if len(sparse_embedding_list) > 0 and len(dense_value_list) < 0:
+        sparse_dnn_input = Flatten()(concat_fn(sparse_embedding_list))
+        dense_dnn_input = Flatten()(concat_fn(dense_value_list))
+        return concat_fn(sparse_dnn_input,dense_dnn_input)
+    elif len(sparse_embedding_list) > 0 :
+        sparse_dnn_input = Flatten()(concat_fn(sparse_embedding_list))
+        return sparse_dnn_input
+    elif len(dense_value_list) > 0 :
+        dense_dnn_input = Flatten()(concat_fn(dense_value_list))
+        return dense_dnn_input
+    else:
+        raise NotImplementedError("dnn_feature_columns can not be empty list")
