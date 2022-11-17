@@ -11,6 +11,8 @@ from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.regularizers import l2
 from .activation import activation_layer
 
+
+
 class DNN(Layer):
     """The Multi Layer Percetron
       Input shape

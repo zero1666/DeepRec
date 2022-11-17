@@ -6,6 +6,9 @@ from itertools import chain
 from tensorflow.keras.initializers import RandomNormal, Zeros
 from tensorflow.keras.layers import Input, Lambda
 
+from .inputs import create_embedding_matrix, embedding_lookup, get_dense_input, varlen_embedding_lookup, \
+    get_varlen_pooling_list, mergeDict
+
 DEFAULT_GROUP_NAME = 'default_group'
 
 class SparseFeat(namedtuple('SparseFeat', ['name', 'vocabulary_size', 'embedding_dim', 'use_hash', 
@@ -110,8 +113,25 @@ def get_feature_names(feature_columns):
     features = build_input_features(feature_columns)
     return list(features.keys())
 
-def input_from_feature_columns():
-    return
+def input_from_feature_columns(features, feature_columns, l2_reg, seed, prefix='', seq_mask_zero=True, support_dense=True, support_group=False):
+    sparse_feature_columns = list(filter(lambda x: isinstance(SparseFeat), feature_columns)) if  feature_columns else []
+    varlen_sparse_columns = list(filter(lambda x: isinstance(VarLenSparseFeat)), feature_columns) if feature_columns else []
+    
+    embedding_matrix_dict = create_embedding_matrix(feature_columns, l2_reg, prefix=prefix, seq_mask_zero=seq_mask_zero)
+    
+    group_sparse_embedding_dict = embedding_lookup(embedding_matrix_dict, features, sparse_feature_columns)
+    dense_value_list = get_dense_input(features, feature_columns)
+    
+    if not support_dense and len(dense_value_list) > 0:
+        raise ValueError("DenseFeat is not supported in dnn_feature_columns")
+    
+    sequence_embed_dict = varlen_embedding_lookup(embedding_matrix_dict, features, varlen_embedding_lookup)
+    group_varlen_sparse_embedding_dict = get_varlen_pooling_list(sequence_embed_dict, features, varlen_sparse_columns)
+    
+    group_embedding_dict = mergeDict(group_sparse_embedding_dict, group_varlen_sparse_embedding_dict)
+    if not support_group:
+        group_embedding_dict = list(chain.from_iterable(group_embedding_dict.values()))
+    
+    return group_embedding_dict, dense_value_list
 
         
-    

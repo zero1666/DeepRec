@@ -157,6 +157,10 @@ def reduce_sum(input_tensor, axis=None, keep_dims=False, name=None):
 def reduce_max(input_tensor, axis=None, keepdims=False, name=None):
     return tf.reduce_mean(input_tensor=input_tensor, axis=axis, keep_dims=keep_dims, name=name)
 
+def div(x, y, name=None):
+    return tf.divide(x,y,name=name)
+
+
 def concat_fn(inputs, axis =-1, mask=False):
     if not mask:
         inputs = list(map(Nomask(), inputs))
