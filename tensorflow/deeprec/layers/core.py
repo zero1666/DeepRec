@@ -1,14 +1,14 @@
 # -*- coding:utf-8 -*-
 """
+
 Author:
-    
 """
 import tensorflow as tf
-from tensorflow.keras import backend as K
-from tensorflow.keras.layers import Layer, Dropout
-from tensorflow.python.ops.init_ops import Zeros, glorot_normal_initializer as glorot_normal
-from tensorflow.keras.layers import BatchNormalization
-from tensorflow.keras.regularizers import l2
+from tensorflow.python.keras import backend as K
+from tensorflow.python.keras.layers import Layer, Dropout
+from tensorflow.python.ops.init_ops import Zeros, Ones, glorot_normal_initializer as glorot_normal
+from tensorflow.python.keras.layers import BatchNormalization
+from tensorflow.python.keras.regularizers import l2
 from .activation import activation_layer
 
 
@@ -29,7 +29,7 @@ class DNN(Layer):
         - **seed**: A Python integer to use as random seed.
     """
     def __init__(self, hidden_units, activation='relu', l2_reg=0, dropout_rate=0, use_bn=False, output_activation=None,
-                seed=1024, **kwargs):
+                 seed=1024, **kwargs):
         self.hidden_units = hidden_units
         self.activation = activation
         self.l2_reg = l2_reg
@@ -37,9 +37,9 @@ class DNN(Layer):
         self.use_bn = use_bn
         self.output_activation = output_activation
         self.seed = seed
-        
+
         super(DNN, self).__init__(**kwargs)
-    
+
     def build(self, input_shape):
         input_size = input_shape[-1]
         hidden_units = [int(input_size)] + list(self.hidden_units)
@@ -56,43 +56,43 @@ class DNN(Layer):
         
         self.dropout_layers = [Dropout(self.dropout_rate, seed=self.seed+1) for i in range(len(self.hidden_units))]
         self.activation_layers = [activation_layer(self.activation) for _ in range(len(self.hidden_units))]
-        
+
         if self.output_activation:
             self.activation_layers[-1] = activation_layer(self.output_activation)
-        
+
         super(DNN,self).build(input_shape)
-    
+
     def call(self, inputs, training=None, **kwargs):
-        
-        deep_inputs = inputs
+
+        deep_input = inputs
         for i in range(len(self.hidden_units)):
-            fc = tf.nn.bias_add(tf.tensordot(deep_inputs, self.kernels[i], axes=(-1,0)), self.bias[i])
-            
+            fc = tf.nn.bias_add(tf.tensordot(
+		deep_input, self.kernels[i], axes=(-1,0)), self.bias[i])
             if self.use_bn:
                 fc = self.bn_layers[i](fc, training=training)
-                
+
             fc = self.activation_layers[i](fc, training=True)
-            
+
             fc = self.dropout_layers[i](fc, training=training)
-            deep_inputs = fc
-            
-        return deep_inputs
-        
+            deep_input = fc
+
+        return deep_input
+
     def compute_output_shape(self, input_shape):
         if len(self.hidden_units) > 0:
             shape = input_shape[:-1] + (self.hidden_units[-1],)
         else:
             shape = input_shape
-            
+
         return tuple(shape)
-    
+
     def get_config(self, ):
         config = {'activation': self.activation, 'hidden_units': self.hidden_units,
                   'l2_reg': self.l2_reg, 'use_bn': self.use_bn, 'dropout_rate': self.dropout_rate,
                   'output_activation': self.output_activation, 'seed': self.seed}
         base_config = super(DNN, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))
-        
+
 class PredictionLayer(Layer):
     """
       Arguments
@@ -112,7 +112,7 @@ class PredictionLayer(Layer):
         if self.use_bias:
             self.global_bias = self.add_weight(
                 shape=(1,), initializer=Zeros(), name="global_bias")
-        
+
         super(PredictionLayer, self).build(input_shape)
 
     def call(self, inputs, **kwargs):
