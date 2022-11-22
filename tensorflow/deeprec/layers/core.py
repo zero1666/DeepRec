@@ -28,7 +28,7 @@ class DNN(Layer):
         - **output_activation**: Activation function to use in the last layer.If ``None``,it will be same as ``activation``.
         - **seed**: A Python integer to use as random seed.
     """
-    def __init__(self, hidden_units, activation='relu', l2_reg=0, dropout_rate=0, user_bn=False, output_activation=None,
+    def __init__(self, hidden_units, activation='relu', l2_reg=0, dropout_rate=0, use_bn=False, output_activation=None,
                 seed=1024, **kwargs):
         self.hidden_units = hidden_units
         self.activation = activation
@@ -51,24 +51,24 @@ class DNN(Layer):
                                          trainable=True)for i in range(len(self.hidden_units))]
         self.bias = [self.add_weight(name='bias_'+str(i), shape=(self.hidden_units[i],), initializer=Zeros(), trainable=True) for i in range(len(self.hidden_units))]
 
-        if self.user_bn:
+        if self.use_bn:
             self.bn_layers = [BatchNormalization() for _ in range(self.hidden_units)]
         
         self.dropout_layers = [Dropout(self.dropout_rate, seed=self.seed+1) for i in range(len(self.hidden_units))]
-        self.activation_layers = [activation_lyaer(self.activation) for _ in range(len(self.hidden_units))]
+        self.activation_layers = [activation_layer(self.activation) for _ in range(len(self.hidden_units))]
         
         if self.output_activation:
             self.activation_layers[-1] = activation_layer(self.output_activation)
         
-        super(DNN).build(input_shape)
+        super(DNN,self).build(input_shape)
     
     def call(self, inputs, training=None, **kwargs):
         
         deep_inputs = inputs
         for i in range(len(self.hidden_units)):
-            fc = tf.nn.bias_add(tf.tensordot(deep_inputs, slef.kernels[i], axes=(-1,0)), self.bias[i])
+            fc = tf.nn.bias_add(tf.tensordot(deep_inputs, self.kernels[i], axes=(-1,0)), self.bias[i])
             
-            if self.user_bn:
+            if self.use_bn:
                 fc = self.bn_layers[i](fc, training=training)
                 
             fc = self.activation_layers[i](fc, training=True)
@@ -94,32 +94,43 @@ class DNN(Layer):
         return dict(list(base_config.items()) + list(config.items()))
         
 class PredictionLayer(Layer):
-    def __init__(self, task='binary', use_bias = False, **kwargs):
-        if task not in ['binary', 'multicalss', 'regression']:
+    """
+      Arguments
+         - **task**: str, ``"binary"`` for  binary logloss or  ``"regression"`` for regression loss
+
+         - **use_bias**: bool.Whether add bias term or not.
+    """
+
+    def __init__(self, task='binary', use_bias=True, **kwargs):
+        if task not in ["binary", "multiclass", "regression"]:
             raise ValueError("task must be binary,multiclass or regression")
         self.task = task
         self.use_bias = use_bias
         super(PredictionLayer, self).__init__(**kwargs)
-    
+
     def build(self, input_shape):
-        if self.use_bias :
-            self.gloal_bias = self.add_weight(name = 'global_bias', shape=(1,), initializer=Zeros())
+        if self.use_bias:
+            self.global_bias = self.add_weight(
+                shape=(1,), initializer=Zeros(), name="global_bias")
         
         super(PredictionLayer, self).build(input_shape)
-    
+
     def call(self, inputs, **kwargs):
+        x = inputs
         if self.use_bias:
             x = tf.nn.bias_add(x, self.global_bias, data_format='NHWC')
-        if self.task == 'binary':
+        if self.task == "binary":
             x = tf.sigmoid(x)
-            
-        output = tf.reshape(x, (-1,1))
+
+        output = tf.reshape(x, (-1, 1))
+
         return output
-    
+
     def compute_output_shape(self, input_shape):
         return (None, 1)
-    
-    def get_config(self,):
-        config = {'task':sel.task, 'use_bias':self.use_bias}
-        base_config = super(PredictionLayer,self).get_config()
-        return dict(list(base_config.items()) + liset(config.items()))
+
+    def get_config(self, ):
+        config = {'task': self.task, 'use_bias': self.use_bias}
+        base_config = super(PredictionLayer, self).get_config()
+        return dict(list(base_config.items()) + list(config.items()))
+

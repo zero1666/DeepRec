@@ -5,7 +5,7 @@ from .core import DNN, PredictionLayer
 from .normalization import LayerNormalization
 from .sequence import (SequencePoolingLayer, WeightedSequenceLayer)
 
-from .utils import NoMask, Hash, Linear, combined_dnn_input, reduce_sum,Concat
+from .utils import NoMask, Hash, Linear, combined_dnn_input, reduce_sum, Concat
 
 custom_objects = {'tf': tf,
                   'DNN': DNN,
