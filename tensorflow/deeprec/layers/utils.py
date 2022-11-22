@@ -13,9 +13,9 @@ from tensorflow.python.keras.regularizers import L2 as l2
 from tensorflow.python.ops.lookup_ops import StaticHashTable
 
 
-class Nomask(Layer):
+class NoMask(Layer):
     def __init__(self, **kwargs):
-        super(Nomask,self).__init__(**kwargs)
+        super(NoMask,self).__init__(**kwargs)
     
     def build(self, input_shape):
         super(NoMask, self).build(input_shape)
@@ -103,12 +103,12 @@ class Linear(Layer):
     
     def build(self, input_shape):
         
-        if self.user_bias = True:
+        if self.user_bias == True:
             self.bias = self.add_weight(name = 'linear_bias',
                                        shape=(1,),
                                        initializer=Zeros(),
                                        trainable = True)
-        if self.mode ==1:
+        if self.mode == 1:
             self.kernel = self.add_weight( name = 'linear_kernel',
                                           shape = [int(input_shape[-1]),1],
                                           initializer = glorot_normal(self.seed),
@@ -116,7 +116,7 @@ class Linear(Layer):
                                           trainable = True)
         elif self.mode == 2:
             self.kernel = self.add_weight(name = 'linear_kernel',
-                                         shape = [int(input_shape[1][-1]), 1)],
+                                         shape = [int(input_shape[1][-1]), 1],
                                          initializer = glorot_normal(self.seed),
                                           regularizer = l2(self.l2_reg),
                                           trainable=True)
@@ -161,9 +161,9 @@ def div(x, y, name=None):
     return tf.divide(x,y,name=name)
 
 
-def concat_fn(inputs, axis =-1, mask=False):
+def concat_func(inputs, axis =-1, mask=False):
     if not mask:
-        inputs = list(map(Nomask(), inputs))
+        inputs = list(map(NoMask(), inputs))
     
     if len(inputs)==1:
         return inputs[0]
@@ -171,15 +171,21 @@ def concat_fn(inputs, axis =-1, mask=False):
         Concatenate(axis=axis)(inputs)
     
 def combined_dnn_input(sparse_embedding_list, dense_value_list):
-    if len(sparse_embedding_list) > 0 and len(dense_value_list) < 0:
-        sparse_dnn_input = Flatten()(concat_fn(sparse_embedding_list))
-        dense_dnn_input = Flatten()(concat_fn(dense_value_list))
-        return concat_fn(sparse_dnn_input,dense_dnn_input)
-    elif len(sparse_embedding_list) > 0 :
-        sparse_dnn_input = Flatten()(concat_fn(sparse_embedding_list))
-        return sparse_dnn_input
-    elif len(dense_value_list) > 0 :
-        dense_dnn_input = Flatten()(concat_fn(dense_value_list))
-        return dense_dnn_input
+    if len(sparse_embedding_list) > 0 and len(dense_value_list) > 0:
+        tmp = concat_func(sparse_embedding_list)
+        sparse_dnn_input = Flatten()(tmp)
+        #sparse_dnn_input = Flatten()(concat_func(sparse_embedding_list))
+        dense_dnn_input = Flatten()(concat_func(dense_value_list))
+        return concat_func([sparse_dnn_input, dense_dnn_input])
+    elif len(sparse_embedding_list) > 0:
+        return Flatten()(concat_func(sparse_embedding_list))
+    elif len(dense_value_list) > 0:
+        return Flatten()(concat_func(dense_value_list))
     else:
         raise NotImplementedError("dnn_feature_columns can not be empty list")
+
+def softmax(logits, dim = -1, name=None):
+    return tf.nn.softmax(logits=logits, axis=dim, name=name)
+
+def reduce_mean(input_tensor, axis=None,keep_dims=False, name=None, reduction_indices=None):
+    return tf.reduce_mean(input_tensor, axis=axis, keepdims=keep_dims,name=name)

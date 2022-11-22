@@ -109,7 +109,7 @@ class PredictionLayer(Layer):
     
     def call(self, inputs, **kwargs):
         if self.use_bias:
-            x = tf.nn.bias_add(x, self.global_bias, data_format'NHWC')
+            x = tf.nn.bias_add(x, self.global_bias, data_format='NHWC')
         if self.task == 'binary':
             x = tf.sigmoid(x)
             

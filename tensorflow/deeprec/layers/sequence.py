@@ -57,12 +57,12 @@ class SequencePoolingLayer(Layer):
         embedding_size = uiseq_embed_list[-1]
         mask = tf.tile(mask,[1,1,embedding_size])
         
-        if self.mode = 'max':
+        if self.mode == 'max':
             hist = uiseq_embed_list - (1-mask) *1e9
             return reduce_max(hist, 1, keep_dims=True)
         
         hist = reduce_sum(uiseq_embed_list * mask, 1, keep_dims=False)
-        if self.mode = 'mean':
+        if self.mode == 'mean':
             hist = div(hist, tf.cast(user_behavior_length, tf.float32)+self.eps)
         
         hist = tf.expand_dims(hist, axis=1)
