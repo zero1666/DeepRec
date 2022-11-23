@@ -4,7 +4,7 @@ import pytest
 import tensorflow as tf
 
 from ..utils_mtl import get_mtl_test_data, check_mtl_model
-from ...models.multitask import PLE
+from deeprec.models.multitask import PLE
 
 
 

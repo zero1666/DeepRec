@@ -7,7 +7,7 @@ import tensorflow as tf
 from tensorflow.python.keras.models import load_model, save_model
 
 from deeprec.utils.feature_column import SparseFeat, DenseFeat, DEFAULT_GROUP_NAME
-from ..layers import custom_objects
+from deeprec.layers import custom_objects
 
 
 def get_mtl_test_data(sample_size=10, embedding_size=4, sparse_feature_num=1,
