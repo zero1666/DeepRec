@@ -26,4 +26,5 @@ def test_PLE(num_levels, gate_dnn_hidden_units):
 
 
 if __name__ == "__main__":
+    test_PLE(1,(4,))
     pass

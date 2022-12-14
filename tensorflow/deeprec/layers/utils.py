@@ -31,11 +31,14 @@ class Hash(Layer):
     """Looks up keys in a table when setup `vocabulary_path`, which outputs the corresponding values.
     If `vocabulary_path` is not set, `Hash` will hash the input to [0,num_buckets). When `mask_zero` = True,
     input value `0` or `0.0` will be set to `0`, and other value will be set in range [1,num_buckets).
+
     The following snippet initializes a `Hash` with `vocabulary_path` file with the first column as keys and
     second column as values:
+
     * `1,emerson`
     * `2,lake`
     * `3,palmer`
+
     >>> hash = Hash(
     ...   num_buckets=3+1,
     ...   vocabulary_path=filename,
@@ -44,6 +47,7 @@ class Hash(Layer):
     2
     >>> hash(tf.constant('lakeemerson')).numpy()
     0
+
     Args:
         num_buckets: An `int` that is >= 1. The number of buckets or the vocabulary size + 1
             when `vocabulary_path` is setup.
@@ -92,58 +96,63 @@ class Hash(Layer):
 
 
 class Linear(Layer):
-    
-    def __init_(self, l2_reg=0.0, mode=0, use_bias=False, seed=1024, **kwargs):
+
+    def __init__(self, l2_reg=0.0, mode=0, use_bias=False, seed=1024, **kwargs):
+
         self.l2_reg = l2_reg
-        if mode not in [0,1,2]:
+        # self.l2_reg = tf.contrib.layers.l2_regularizer(float(l2_reg_linear))
+        if mode not in [0, 1, 2]:
             raise ValueError("mode must be 0,1 or 2")
         self.mode = mode
-        self.use_bias = user_bias
+        self.use_bias = use_bias
         self.seed = seed
-        super(Linear,self).__init__(**kwargs)
-    
+        super(Linear, self).__init__(**kwargs)
+
     def build(self, input_shape):
-        
-        if self.user_bias == True:
-            self.bias = self.add_weight(name = 'linear_bias',
-                                       shape=(1,),
-                                       initializer=Zeros(),
-                                       trainable = True)
+        if self.use_bias:
+            self.bias = self.add_weight(name='linear_bias',
+                                        shape=(1,),
+                                        initializer=Zeros(),
+                                        trainable=True)
         if self.mode == 1:
-            self.kernel = self.add_weight( name = 'linear_kernel',
-                                          shape = [int(input_shape[-1]),1],
-                                          initializer = glorot_normal(self.seed),
-                                          regularizer = l2(self.l2_reg),
-                                          trainable = True)
+            self.kernel = self.add_weight(
+                'linear_kernel',
+                shape=[int(input_shape[-1]), 1],
+                initializer=glorot_normal(self.seed),
+                regularizer=l2(self.l2_reg),
+                trainable=True)
         elif self.mode == 2:
-            self.kernel = self.add_weight(name = 'linear_kernel',
-                                         shape = [int(input_shape[1][-1]), 1],
-                                         initializer = glorot_normal(self.seed),
-                                          regularizer = l2(self.l2_reg),
-                                          trainable=True)
-        # Be sure to call this somewhere!
-        super(Linear, self).build(input_shape)
-    
+            self.kernel = self.add_weight(
+                'linear_kernel',
+                shape=[int(input_shape[1][-1]), 1],
+                initializer=glorot_normal(self.seed),
+                regularizer=l2(self.l2_reg),
+                trainable=True)
+
+        super(Linear, self).build(input_shape)  # Be sure to call this somewhere!
+
     def call(self, inputs, **kwargs):
         if self.mode == 0:
             sparse_input = inputs
-            linear_logit = reduce_sum(sparse_input,axis = -1, keep_dims=True)
-        elif self.mode == 1 :
+            linear_logit = reduce_sum(sparse_input, axis=-1, keep_dims=True)
+        elif self.mode == 1:
             dense_input = inputs
-            fc = tf.tensordot(dense_input, self.kernel, axis=(-1,0))
+            fc = tf.tensordot(dense_input, self.kernel, axes=(-1, 0))
             linear_logit = fc
-        else :
+        else:
             sparse_input, dense_input = inputs
-            fc = tf.tensordot(dense_input, self.kernel, axis=(-1,0))
-            linear_logit = reduce_sum(sparse_input, axis = -1, keep_dims=False) + fc
-        
+            fc = tf.tensordot(dense_input, self.kernel, axes=(-1, 0))
+            linear_logit = reduce_sum(sparse_input, axis=-1, keep_dims=False) + fc
         if self.use_bias:
-            linear_logit +=  self.bias
-        
+            linear_logit += self.bias
+
         return linear_logit
-    
+
     def compute_output_shape(self, input_shape):
         return (None, 1)
+
+    def compute_mask(self, inputs, mask):
+        return None
 
     def get_config(self, ):
         config = {'mode': self.mode, 'l2_reg': self.l2_reg, 'use_bias': self.use_bias, 'seed': self.seed}
@@ -209,13 +218,18 @@ def concat_func(inputs, axis=-1, mask=False):
 def reduce_sum(input_tensor, axis=None, keep_dims=False, name=None):
     return tf.reduce_sum(input_tensor, axis=axis, keepdims=keep_dims, name = name)
 
-def reduce_max(input_tensor, axis=None, keepdims=False, name=None):
-    return tf.reduce_mean(input_tensor=input_tensor, axis=axis, keep_dims=keep_dims, name=name)
+def reduce_max(input_tensor, axis=None, keep_dims=False, name=None):
+    return tf.reduce_max(input_tensor=input_tensor, axis=axis, keepdims=keep_dims, name=name)
+
+def reduce_mean(input_tensor, axis=None,keep_dims=False, name=None, reduction_indices=None):
+    return tf.reduce_mean(input_tensor, axis=axis, keepdims=keep_dims,name=name)
 
 def div(x, y, name=None):
     return tf.divide(x,y,name=name)
 
 
+def softmax(logits, dim = -1, name=None):
+    return tf.nn.softmax(logits=logits, axis=dim, name=name)
     
 def combined_dnn_input(sparse_embedding_list, dense_value_list):
     if len(sparse_embedding_list) > 0 and len(dense_value_list) > 0:
@@ -231,8 +245,25 @@ def combined_dnn_input(sparse_embedding_list, dense_value_list):
     else:
         raise NotImplementedError("dnn_feature_columns can not be empty list")
 
-def softmax(logits, dim = -1, name=None):
-    return tf.nn.softmax(logits=logits, axis=dim, name=name)
 
-def reduce_mean(input_tensor, axis=None,keep_dims=False, name=None, reduction_indices=None):
-    return tf.reduce_mean(input_tensor, axis=axis, keepdims=keep_dims,name=name)
+
+
+class _Add(Layer):
+    def __init__(self, **kwargs):
+        super(_Add, self).__init__(**kwargs)
+
+    def build(self, input_shape):
+        super(_Add, self).build(input_shape)
+
+    def call(self, inputs, **kwargs):
+        if  len(inputs) == 0:
+            return tf.constant([[0.0]])
+        return Add()(inputs)
+
+def add_func(inputs):
+    if not isinstance(inputs, list):
+        return inputs
+    if len(inputs) == 1:
+        return inputs[0]
+    return _Add()(inputs)
+

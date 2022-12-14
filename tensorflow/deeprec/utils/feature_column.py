@@ -9,6 +9,8 @@ from tensorflow.python.keras.layers import Input, Lambda
 from .inputs import create_embedding_matrix, embedding_lookup, get_dense_input, varlen_embedding_lookup, \
     get_varlen_pooling_list, mergeDict
 
+from ..layers.utils import Linear, concat_func
+
 DEFAULT_GROUP_NAME = 'default_group'
 
 class SparseFeat(namedtuple('SparseFeat', ['name', 'vocabulary_size', 'embedding_dim', 'use_hash', 
@@ -89,7 +91,11 @@ class VarLenSparseFeat(namedtuple('VarLenSparseFeat',
 
     def __hash__(self):
         return self.name.__hash__()
-    
+
+
+def get_feature_names(feature_columns):
+    features = build_input_features(feature_columns)
+    return list(features.keys())
 def build_input_features(feature_columns, prefix=''):
     input_features = OrderedDict()
     for fc in feature_columns:
@@ -105,13 +111,51 @@ def build_input_features(feature_columns, prefix=''):
                 input_features[fc.length_name] = Input(shape=(1,), name=prefix+fc.length_name, dtype='int32')
         else:
             raise TypeError("Invalid feature column type,got", type(fc))
-    
+
     return input_features
 
 
-def get_feature_names(feature_columns):
-    features = build_input_features(feature_columns)
-    return list(features.keys())
+def get_linear_logit(features, feature_columns, units=1, use_bias=False, seed=1024, prefix='linear',
+                     l2_reg=0, sparse_feat_refine_weight=None):
+    linear_feature_columns = copy(feature_columns)
+    for i in range(len(linear_feature_columns)):
+        if isinstance(linear_feature_columns[i], SparseFeat):
+            linear_feature_columns[i] = linear_feature_columns[i]._replace(embedding_dim=1,
+                                                                           embeddings_initializer=Zeros())
+        if isinstance(linear_feature_columns[i], VarLenSparseFeat):
+            linear_feature_columns[i] = linear_feature_columns[i]._replace(
+                sparsefeat=linear_feature_columns[i].sparsefeat._replace(embedding_dim=1,
+                                                                         embeddings_initializer=Zeros()))
+
+    linear_emb_list = [input_from_feature_columns(features, linear_feature_columns, l2_reg, seed,
+                                                  prefix=prefix + str(i))[0] for i in range(units)]
+    _, dense_input_list = input_from_feature_columns(features, linear_feature_columns, l2_reg, seed, prefix=prefix)
+
+    linear_logit_list = []
+    for i in range(units):
+
+        if len(linear_emb_list[i]) > 0 and len(dense_input_list) > 0:
+            sparse_input = concat_func(linear_emb_list[i])
+            dense_input = concat_func(dense_input_list)
+            if sparse_feat_refine_weight is not None:
+                sparse_input = Lambda(lambda x: x[0] * tf.expand_dims(x[1], axis=1))(
+                    [sparse_input, sparse_feat_refine_weight])
+            linear_logit = Linear(l2_reg, mode=2, use_bias=use_bias, seed=seed)([sparse_input, dense_input])
+        elif len(linear_emb_list[i]) > 0:
+            sparse_input = concat_func(linear_emb_list[i])
+            if sparse_feat_refine_weight is not None:
+                sparse_input = Lambda(lambda x: x[0] * tf.expand_dims(x[1], axis=1))(
+                    [sparse_input, sparse_feat_refine_weight])
+            linear_logit = Linear(l2_reg, mode=0, use_bias=use_bias, seed=seed)(sparse_input)
+        elif len(dense_input_list) > 0:
+            dense_input = concat_func(dense_input_list)
+            linear_logit = Linear(l2_reg, mode=1, use_bias=use_bias, seed=seed)(dense_input)
+        else:   #empty feature_columns
+            return Lambda(lambda x: tf.constant([[0.0]]))(list(features.values())[0])
+        linear_logit_list.append(linear_logit)
+
+    return concat_func(linear_logit_list)
+
 
 def input_from_feature_columns(features, feature_columns, l2_reg, seed, prefix='', seq_mask_zero=True,
                                support_dense=True, support_group=False):
@@ -135,4 +179,3 @@ def input_from_feature_columns(features, feature_columns, l2_reg, seed, prefix='
         group_embedding_dict = list(chain.from_iterable(group_embedding_dict.values()))
     return group_embedding_dict, dense_value_list
 
-        
